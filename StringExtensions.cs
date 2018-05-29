@@ -6,8 +6,17 @@ using System.Threading.Tasks;
 
 namespace X937
 {
+    /// <summary>
+    /// Provides extra methods to the string class.
+    /// </summary>
     public static class StringExtensions
     {
+        /// <summary>
+        /// Returns the leftmost part of a string, of at most size characters.
+        /// </summary>
+        /// <param name="value">The string value to be trimmed.</param>
+        /// <param name="size">The maximum string size to return.</param>
+        /// <returns>A truncated string of no more than size characters.</returns>
         public static string Left( this string value, int size )
         {
             if ( value == null )
@@ -23,6 +32,12 @@ namespace X937
             return value;
         }
 
+        /// <summary>
+        /// Returns the rightmost part of a string, of at most size characters.
+        /// </summary>
+        /// <param name="value">The string value to be trimmed.</param>
+        /// <param name="size">The maximum string size to return.</param>
+        /// <returns>A truncated string of no more than size characters.</returns>
         public static string Right( this string value, int size )
         {
             if ( value == null )

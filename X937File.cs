@@ -6,6 +6,7 @@ namespace X937
 {
     /// <summary>
     /// Defines the basic structure of an X937 file as stored in memory. 
+    /// NOTE: This class is not currently used and may be removed.
     /// </summary>
     public class X937File
     {
