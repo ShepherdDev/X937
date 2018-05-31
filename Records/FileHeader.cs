@@ -7,7 +7,7 @@ namespace X937.Records
     public class FileHeader : Record
     {
         [IntegerField( 2, 2 )]
-        public int StandardLevel { get; protected set; }
+        public int StandardLevel { get; set; }
 
         [TextField( 3, 1 )]
         public string FileTypeIndicator { get; set; }
