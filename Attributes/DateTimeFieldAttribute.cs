@@ -26,9 +26,23 @@ namespace X937.Attributes
         /// <param name="property">The information about the property to be set.</param>
         public override void DecodeField( BinaryReader reader, Record record, PropertyInfo property )
         {
-            var value = DateTime.ParseExact( reader.ReadEbcdicString( 12 ), "yyyyMMddHHmm", null );
+            DateTime value;
 
-            property.SetValue( record, value );
+            if ( DateTime.TryParseExact( reader.ReadEbcdicString( 8 ), "yyyyMMddHHmm", null, System.Globalization.DateTimeStyles.None, out value ) )
+            {
+                property.SetValue( record, value );
+            }
+            else
+            {
+                if ( property.PropertyType.IsGenericType && property.PropertyType.GetGenericTypeDefinition() == typeof( Nullable<> ) )
+                {
+                    property.SetValue( record, null );
+                }
+                else
+                {
+                    throw new Exception( "Null date found in data but property not nullable." );
+                }
+            }
         }
 
         /// <summary>
@@ -39,9 +53,11 @@ namespace X937.Attributes
         /// <param name="property">The information abou the property to be encoded.</param>
         public override void EncodeField( BinaryWriter writer, Record record, PropertyInfo property )
         {
-            DateTime value = ( DateTime ) property.GetValue( record );
+            var value = ( DateTime? ) property.GetValue( record );
 
-            writer.WriteEbcdicString( value.ToString( "yyyyMMddHHmm" ) );
+            string valueStr = value.HasValue ? value.Value.ToString( "yyyyMMddHHmm" ) : new string( ' ', Size );
+
+            writer.WriteEbcdicString( valueStr );
         }
     }
 }
