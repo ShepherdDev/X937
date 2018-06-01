@@ -22,7 +22,7 @@ namespace X937.Records
         public string ECEInstitutionName { get; set; }
 
         [DateField( 7 )]
-        public DateTime SettlementDate { get; set; }
+        public DateTime? SettlementDate { get; set; }
 
         [TextField( 8, 15 )]
         protected string Reserved { get; set; }
