@@ -15,7 +15,7 @@ namespace X937.Records
         [TextField( 4, 2 )]
         public string CycleNumber { get; set; }
 
-        [TextField( 5, 15 )]
+        [TextField( 5, 15, FieldJustification.Right )]
         public string ClientInstitutionItemSequenceNumber { get; set; }
 
         [TextField( 6, 16 )]
