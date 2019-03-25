@@ -59,7 +59,7 @@ namespace X937
             {
                 foreach ( var record in Records )
                 {
-                    record.Encode( writer );
+                    record.Encode( writer, true );
                 }
             }
         }
