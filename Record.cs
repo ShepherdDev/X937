@@ -95,6 +95,10 @@ namespace X937
                     record = new Records.ImageViewData();
                     break;
 
+                case 61:
+                    record = new Records.CreditDetail();
+                    break;
+
                 case 70:
                     record = new Records.BundleControl();
                     break;
