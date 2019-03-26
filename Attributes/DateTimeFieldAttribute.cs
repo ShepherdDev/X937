@@ -28,7 +28,7 @@ namespace X937.Attributes
         {
             DateTime value;
 
-            if ( DateTime.TryParseExact( reader.ReadEbcdicString( 8 ), "yyyyMMddHHmm", null, System.Globalization.DateTimeStyles.None, out value ) )
+            if ( DateTime.TryParseExact( reader.ReadEbcdicString( 12 ), "yyyyMMddHHmm", null, System.Globalization.DateTimeStyles.None, out value ) )
             {
                 property.SetValue( record, value );
             }
