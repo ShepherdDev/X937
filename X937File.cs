@@ -34,13 +34,23 @@ namespace X937
         /// </summary>
         /// <param name="dataStream">The Stream that contains the previously encoded X937 data.</param>
         public X937File( Stream dataStream )
+            : this( dataStream, new DefaultRecordFactory() )
+        {
+        }
+
+        /// <summary>
+        /// Create a new X937 file by decoding data in the Stream.
+        /// </summary>
+        /// <param name="dataStream">The Stream that contains the previously encoded X937 data.</param>
+        /// <param name="recordFactory">The factory responsible for instantiating new records.</param>
+        public X937File( Stream dataStream, IRecordFactory recordFactory )
             : this()
         {
             using ( var reader = new BinaryReader( dataStream ) )
             {
                 while ( reader.BaseStream.Position < reader.BaseStream.Length )
                 {
-                    Records.Add( Record.DecodeRecord( reader ) );
+                    Records.Add( Record.DecodeRecord( reader, recordFactory ) );
                 }
             }
         }

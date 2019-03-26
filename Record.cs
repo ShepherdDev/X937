@@ -45,8 +45,19 @@ namespace X937
         /// <returns>A new Record object that has been initialized from the reader.</returns>
         public static Record DecodeRecord( BinaryReader reader )
         {
+            return DecodeRecord( reader, new DefaultRecordFactory() );
+        }
+
+        /// <summary>
+        /// Decodes a record from the binary data reader. The reader should be positioned
+        /// at the RecordType field, not at the Record Length Indicator.
+        /// </summary>
+        /// <param name="reader">The reader containing the data to be decoded.</param>
+        /// <param name="recordFactory">The factory in charge of instantiating the proper record class.</param>
+        /// <returns>A new Record object that has been initialized from the reader.</returns>
+        public static Record DecodeRecord( BinaryReader reader, IRecordFactory recordFactory )
+        {
             int recordType = 0;
-            Record record = null;
             long startPosition = reader.BaseStream.Position;
 
             //
@@ -65,55 +76,7 @@ namespace X937
             //
             // Initialize the blank record based on the type.
             //
-            switch ( recordType )
-            {
-                case 1:
-                    record = new Records.FileHeader();
-                    break;
-
-                case 10:
-                    record = new Records.CashLetterHeader();
-                    break;
-
-                case 20:
-                    record = new Records.BundleHeader();
-                    break;
-
-                case 25:
-                    record = new Records.CheckDetail();
-                    break;
-
-                case 26:
-                    record = new Records.CheckDetailAddendumA();
-                    break;
-
-                case 50:
-                    record = new Records.ImageViewDetail();
-                    break;
-
-                case 52:
-                    record = new Records.ImageViewData();
-                    break;
-
-                case 61:
-                    record = new Records.CreditDetail();
-                    break;
-
-                case 70:
-                    record = new Records.BundleControl();
-                    break;
-
-                case 90:
-                    record = new Records.CashLetterControl();
-                    break;
-
-                case 99:
-                    record = new Records.FileControl();
-                    break;
-
-                default:
-                    throw new Exception( string.Format( "Unknown record type '{0}' found.", recordType ) );
-            }
+            var record = recordFactory.GetRecordForType( recordType );
 
             //
             // Instruct the record to decode itself from the reader.
