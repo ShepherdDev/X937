@@ -187,6 +187,16 @@ namespace X937
         /// <param name="writer">The writer that will contain the data.</param>
         public virtual void Encode( BinaryWriter writer )
         {
+            Encode( writer, true );
+        }
+
+        /// <summary>
+        /// Encode the record into the BinaryWriter and optionally include the Record Length Indicator.
+        /// </summary>
+        /// <param name="writer">The writer that will contain the data.</param>
+        /// <param name="AddRecordSize">Should the record be prefixed with the length of the data.</param>
+        public virtual void Encode( BinaryWriter writer, bool AddRecordSize )
+        {
             //
             // Get all properties that have a FieldAttribute defined on them and then order
             // by the FieldNumber.
@@ -204,8 +214,11 @@ namespace X937
             //
             // Write the Record Length Indicator.
             //
-            int recordSize = fields.Sum( f => f.Attribute.DataSize( this, f.Property ) );
-            writer.Write( BitConverter.GetBytes( System.Net.IPAddress.HostToNetworkOrder( recordSize ) ) );
+            if ( AddRecordSize )
+            {
+                int recordSize = fields.Sum( f => f.Attribute.DataSize( this, f.Property ) );
+                writer.Write( BitConverter.GetBytes( System.Net.IPAddress.HostToNetworkOrder( recordSize ) ) );
+            }
 
             //
             // Step through each field and encode it into the data writer.
